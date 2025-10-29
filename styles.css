@@ -1,0 +1,233 @@
+:root{
+  --page-width: 21cm;
+  --page-height: 29.7cm;
+  --header-height: 3cm;
+  --left-col-width: 6cm;
+  --measure-size: 1.5cm;
+  --part-gap: 0.3cm; /* 3 mm = 0.3 cm */
+  --measure-bg: #CECECE;
+  --font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:var(--font-family);
+  padding:10px;
+  background:#f6f6f6;
+  -webkit-print-color-adjust: exact;
+}
+
+/* Toolbar (controls) */
+.toolbar{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+}
+.toolbar input[type="text"], .toolbar input[type="number"]{
+  padding:4px 6px;
+  margin-left:6px;
+}
+
+/* The page sheet sized for A4 */
+.sheet{
+  width:var(--page-width);
+  min-height:var(--page-height);
+  margin:0 auto;
+  background:white;
+  padding:12pt;
+  box-shadow:0 0 8px rgba(0,0,0,0.08);
+}
+
+/* Header */
+.sheet-header{
+  height:var(--header-height);
+  max-height:var(--header-height);
+  display:flex;
+  align-items:center;
+  border-bottom:1px solid transparent;
+  margin-bottom:8px;
+}
+.title-row{
+  display:flex;
+  justify-content:space-between;
+  width:100%;
+  align-items:center;
+}
+.song-title .underline{
+  display:inline-block;
+  padding-bottom:4px;
+  border-bottom:2px solid black;
+  font-weight:700;
+  font-size:18pt;
+}
+.tempo-display{
+  font-size:12pt;
+  font-weight:600;
+}
+
+/* Body: left column + right grid */
+.sheet-body{
+  display:block;
+}
+.part{
+  display:flex;
+  gap:8px;
+  margin-bottom:var(--part-gap);
+  align-items:flex-start;
+}
+
+/* left column: names */
+.part-left{
+  width:var(--left-col-width);
+  min-width:var(--left-col-width);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.part-left .part-name{
+  height:var(--measure-size);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:transparent;
+  border:1px dashed #aaa;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  font-size:10pt;
+  max-width:100%;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+/* right: the grid */
+.part-right{
+  flex:1;
+}
+.row{
+  display:flex;
+  gap:4px;
+  margin-bottom:4px;
+  align-items:flex-start;
+}
+.measure{
+  width:var(--measure-size);
+  height:var(--measure-size);
+  background:var(--measure-bg);
+  position:relative;
+  border:1px solid #999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  cursor:pointer;
+  user-select:none;
+  overflow:visible;
+}
+
+/* single chord center (oval or not) */
+.measure .chord{
+  background:transparent;
+  padding:3px 6px;
+}
+.measure .chord.oval{
+  background:white;
+  border:1px solid black;
+  border-radius:999px;
+  padding:2px 6px;
+}
+
+/* split measure visuals: diagonal from bottom-left to top-right */
+.measure.split{
+  background:
+    linear-gradient(135deg, transparent 49.4%, rgba(0,0,0,0.6) 50%, transparent 50.6%) ,
+    var(--measure-bg);
+  background-size:100% 100%;
+}
+.measure .half{
+  position:absolute;
+  max-width:calc(var(--measure-size) - 4px);
+  overflow:hidden;
+  font-weight:700;
+  color:black;
+}
+.measure .half.top-left{
+  left:4px;
+  top:4px;
+  transform-origin:left top;
+  text-align:left;
+}
+.measure .half.bottom-right{
+  right:4px;
+  bottom:4px;
+  text-align:right;
+}
+
+/* controls at each part */
+.part-controls{
+  margin-top:4px;
+  display:flex;
+  gap:6px;
+}
+.small-btn{
+  padding:4px 8px;
+  font-size:12px;
+}
+
+/* footer comments */
+.sheet-footer{
+  margin-top:12pt;
+}
+.sheet-footer textarea{
+  width:100%;
+  font-size:12pt; /* corps 12 */
+  line-height:1.2;
+  resize:none;
+  padding:6px;
+  box-sizing:border-box;
+  height: calc(12pt * 4 * 1.2); /* approx 4 lines */
+}
+
+/* Modal */
+.modal{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.35);
+  z-index:999;
+}
+.modal.hidden{display:none}
+.modal-content{
+  background:white;
+  padding:14px;
+  width:320px;
+  border-radius:6px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.25);
+}
+.modal-content label{
+  display:block;
+  margin:8px 0;
+}
+.modal-actions{
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  margin-top:8px;
+}
+
+/* Print styles: A4 */
+@media print{
+  body{padding:0;margin:0}
+  .toolbar{display:none}
+  .sheet{box-shadow:none;margin:0;padding:12pt}
+  .modal{display:none}
+  /* force page size A4 */
+  @page{
+    size:A4;
+    margin:12pt;
+  }
+}

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Générateur de grilles d'accords</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="toolbar">
+    <div class="left-controls">
+      <label>Nom du morceau:
+        <input id="songNameInput" placeholder="Titre" maxlength="80" />
+      </label>
+      <label>Tempo (BPM):
+        <input id="tempoInput" type="number" min="20" max="300" value="120" />
+      </label>
+    </div>
+    <div class="right-controls">
+      <button id="addPartBtn">Ajouter une partie</button>
+      <button id="transposeUp">Transposer ▲</button>
+      <button id="transposeDown">Transposer ▼</button>
+      <button id="exportPdf">Exporter PDF</button>
+    </div>
+  </div>
+
+  <main id="page" class="sheet">
+    <header class="sheet-header">
+      <div class="title-row">
+        <div class="song-title">
+          <span id="songTitleDisplay" class="underline">TITRE</span>
+        </div>
+        <div class="tempo-display">
+          <span id="tempoDisplay">120 BPM</span>
+        </div>
+      </div>
+    </header>
+
+    <section id="content" class="sheet-body">
+      <!-- Parts will be injected here -->
+    </section>
+
+    <footer class="sheet-footer">
+      <textarea id="comments" placeholder="Commentaires (4 lignes)" rows="4"></textarea>
+    </footer>
+  </main>
+
+  <!-- Modal for editing a measure -->
+  <div id="measureModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Éditer la mesure</h3>
+      <label>Accord (ex: Abm7, C#, D, Em, G7)
+        <input id="chordInput" maxlength="12" placeholder="Ex: Abm7" />
+      </label>
+      <label>
+        Diviser la mesure (2 accords)
+        <input id="splitCheckbox" type="checkbox" />
+      </label>
+      <label>
+        Afficher l'accord dans un ovale
+        <input id="ovalCheckbox" type="checkbox" />
+      </label>
+      <div class="modal-actions">
+        <button id="saveMeasureBtn">Enregistrer</button>
+        <button id="deleteMeasureBtn">Effacer</button>
+        <button id="closeModalBtn">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
