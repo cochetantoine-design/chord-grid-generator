@@ -118,8 +118,12 @@
         const end = Math.min(start + part.measuresPerLine, part.measuresTotal);
         for(let i=start;i<end;i++){
           const m = part.measures[i] || { chord:'', split:false, chord2:'', oval:false };
+          // compute whether measure contains at least one chord
+          const hasChord = m.split
+            ? ((m.chord || '').trim() !== '' || (m.chord2 || '').trim() !== '')
+            : ((m.chord || '').trim() !== '');
           const mEl = document.createElement('div');
-          mEl.className = 'measure' + (m.split ? ' split' : '');
+          mEl.className = 'measure' + (m.split ? ' split' : '') + (hasChord ? ' filled' : '');
           // clickable to edit
           mEl.addEventListener('click', (ev)=> {
             openMeasureModal(part.id, i);
