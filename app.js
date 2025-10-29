@@ -74,18 +74,21 @@
       // Controls: duplicate / remove / edit settings
       const ctrls = document.createElement('div');
       ctrls.className = 'part-controls';
+
       const dupBtn = document.createElement('button');
-      dupBtn.className = 'small-btn';
+      dupBtn.className = 'small-btn no-print';
       dupBtn.textContent = 'Dupliquer';
       dupBtn.addEventListener('click', () => duplicatePart(part.id));
+
       const removeBtn = document.createElement('button');
-      removeBtn.className = 'small-btn';
+      removeBtn.className = 'small-btn no-print';
       removeBtn.textContent = 'Supprimer';
       removeBtn.addEventListener('click', () => {
         if(confirm('Supprimer cette partie ?')) removePart(part.id);
       });
+
       const editBtn = document.createElement('button');
-      editBtn.className = 'small-btn';
+      editBtn.className = 'small-btn no-print';
       editBtn.textContent = 'Paramètres';
       editBtn.addEventListener('click', () => {
         const mt = parseInt(prompt('Nombre total de mesures:', part.measuresTotal),10);
@@ -100,6 +103,7 @@
           render();
         }
       });
+
       ctrls.appendChild(editBtn);
       ctrls.appendChild(dupBtn);
       ctrls.appendChild(removeBtn);
@@ -227,14 +231,13 @@
         a = (x||'').trim();
         b = (y||'').trim();
       }else{
-        // if user typed two tokens separated by space
-        const t = raw.split(/\s+/);
-        a = t[0]||'';
-        b = t[1]||'';
+        const partsRaw = raw.split(/\s+/);
+        a = partsRaw[0] || '';
+        b = partsRaw[1] || '';
       }
-      part.measures[idx] = { chord: normalizeChord(a), split:true, chord2: normalizeChord(b), oval: !!oval };
+      part.measures[idx] = { chord: a, split: true, chord2: b, oval: !!oval };
     }else{
-      part.measures[idx] = { chord: normalizeChord(raw), split:false, chord2:'', oval: !!oval };
+      part.measures[idx] = { chord: raw, split: false, chord2:'', oval: !!oval };
     }
     closeModal();
     render();
@@ -244,12 +247,13 @@
     if(!editing.partId) return;
     const part = parts.find(x => x.id === editing.partId);
     if(!part) return;
-    part.measures[editing.measureIndex] = { chord:'', split:false, chord2:'', oval:false };
-    closeModal();
-    render();
+    if(confirm('Effacer cette mesure ?')){
+      part.measures[editing.measureIndex] = { chord:'', split:false, chord2:'', oval:false };
+      closeModal();
+      render();
+    }
   });
 
-  // Chord parsing/normalization
   // Allowed roots: A ; Bb ; B ; C ; C# ; D ; Eb ; E ; F ; F# ; G ; Ab
   // Extract root: check 2-letter roots first (Bb, C#, Eb, F#, Ab) then 1-letter.
   function extractRoot(chord){
@@ -314,7 +318,17 @@
   exportPdfBtn.addEventListener('click', ()=>{
     // ensure header displays up-to-date
     updateHeaderDisplays();
-    window.print();
+
+    // add temporary class to force non-print styles to hide if needed
+    document.body.classList.add('exporting-pdf');
+
+    // call print; removal of the class is done after a short timeout to support browsers that don't block
+    try {
+      window.print();
+    } finally {
+      // remove class after a short delay to ensure print stylesheet had time to apply
+      setTimeout(()=> document.body.classList.remove('exporting-pdf'), 250);
+    }
   });
 
   // Initialize with an example part
