@@ -75,17 +75,17 @@
       const ctrls = document.createElement('div');
       ctrls.className = 'part-controls';
       const dupBtn = document.createElement('button');
-      dupBtn.className = 'small-btn';
+      dupBtn.className = 'small-btn no-print';
       dupBtn.textContent = 'Dupliquer';
       dupBtn.addEventListener('click', () => duplicatePart(part.id));
       const removeBtn = document.createElement('button');
-      removeBtn.className = 'small-btn';
+      removeBtn.className = 'small-btn no-print';
       removeBtn.textContent = 'Supprimer';
       removeBtn.addEventListener('click', () => {
         if(confirm('Supprimer cette partie ?')) removePart(part.id);
       });
       const editBtn = document.createElement('button');
-      editBtn.className = 'small-btn';
+      editBtn.className = 'small-btn no-print';
       editBtn.textContent = 'Paramètres';
       editBtn.addEventListener('click', () => {
         const mt = parseInt(prompt('Nombre total de mesures:', part.measuresTotal),10);
@@ -314,7 +314,11 @@
   exportPdfBtn.addEventListener('click', ()=>{
     // ensure header displays up-to-date
     updateHeaderDisplays();
+    document.body.classList.add('exporting-pdf');
     window.print();
+    setTimeout(() => {
+      document.body.classList.remove('exporting-pdf');
+    }, 250);
   });
 
   // Initialize with an example part
