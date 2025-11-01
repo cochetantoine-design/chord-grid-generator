@@ -117,6 +117,39 @@ body{
   user-select:none;
   overflow:visible;
 }
+
+/* When a measure contains at least one chord, use white background */
+.measure.filled{
+  background: #ffffff;
+}
+/* For split measures that are filled: keep diagonal overlay on white */
+.measure.split.filled{
+  background:
+    linear-gradient(135deg, transparent 49.4%, rgba(0,0,0,0.6) 50%, transparent 50.6%),
+    #ffffff;
+  background-size:100% 100%;
+}
+
+/* single chord center (oval or not) */
+.measure .chord{
+  background:transparent;
+  padding:3px 6px;
+}
+.measure .chord.oval{
+  background:white;
+  border:1px solid black;
+  border-radius:999px;
+  padding:2px 6px;
+}
+
+/* split measure visuals: diagonal from bottom-left to top-right */
+/* Note: .measure.split rule left as a fallback for unfilled split measures */
+.measure.split{
+  background:
+    linear-gradient(135deg, transparent 49.4%, rgba(0,0,0,0.6) 50%, transparent 50.6%) ,
+    var(--measure-bg);
+  background-size:100% 100%;
+}
 .measure .half{
   position:absolute;
   max-width:calc(var(--measure-size) - 4px);
