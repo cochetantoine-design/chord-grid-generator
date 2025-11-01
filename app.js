@@ -316,6 +316,7 @@
     updateHeaderDisplays();
     document.body.classList.add('exporting-pdf');
     window.print();
+    // Remove class after short delay to allow print dialog to capture the hidden state
     setTimeout(() => {
       document.body.classList.remove('exporting-pdf');
     }, 250);
