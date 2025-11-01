@@ -34,6 +34,8 @@
 
   // Helpers
   function makeId(){ return Math.random().toString(36).slice(2,9); }
+  
+  function sleep(ms){ return new Promise(resolve => setTimeout(resolve, ms)); }
 
   function clampMeasuresPerLine(n){
     n = Math.max(1, Math.min(10, n));
@@ -310,11 +312,50 @@
   transposeUpBtn.addEventListener('click', ()=> transposeAll(1));
   transposeDownBtn.addEventListener('click', ()=> transposeAll(-1));
 
-  // Export to PDF via print
-  exportPdfBtn.addEventListener('click', ()=>{
+  // Export to PDF via html2pdf or fallback to print
+  exportPdfBtn.addEventListener('click', async ()=>{
     // ensure header displays up-to-date
     updateHeaderDisplays();
-    window.print();
+    
+    // Check if html2pdf is available
+    if(typeof html2pdf === 'undefined'){
+      // Fallback to window.print if html2pdf not available
+      document.body.classList.add('printing');
+      await sleep(120);
+      try{
+        window.print();
+      }finally{
+        await sleep(500); // Give time for print dialog
+        document.body.classList.remove('printing');
+      }
+      return;
+    }
+    
+    // Use html2pdf for export
+    try{
+      // Add printing class to hide UI controls
+      document.body.classList.add('printing');
+      // Wait for reflow to ensure the class takes effect
+      await sleep(120);
+      
+      // Get the page element to export
+      const element = document.getElementById('page');
+      
+      // Configure html2pdf options
+      const opt = {
+        margin: 12,
+        filename: 'chord-grid.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' }
+      };
+      
+      // Generate and save the PDF
+      await html2pdf().set(opt).from(element).save();
+    }finally{
+      // Remove printing class after export
+      document.body.classList.remove('printing');
+    }
   });
 
   // Initialize with an example part

@@ -232,6 +232,20 @@ body{
   margin-top:8px;
 }
 
+/* Printing class to hide interactive elements during PDF export */
+.printing .toolbar,
+.printing .modal,
+.printing .modal-actions,
+.printing .small-btn,
+.printing .controls,
+.printing .no-print,
+.printing button,
+.printing input[type="button"],
+.printing input[type="submit"],
+.printing .part-controls {
+  display: none !important;
+}
+
 /* Print styles: A4 */
 @media print{
   body{padding:0;margin:0}
