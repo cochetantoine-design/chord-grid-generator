@@ -232,12 +232,27 @@ body{
   margin-top:8px;
 }
 
+/* Hide elements with .no-print class during programmatic PDF export */
+.exporting-pdf .no-print {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 /* Print styles: A4 */
 @media print{
   body{padding:0;margin:0}
   .toolbar{display:none}
   .sheet{box-shadow:none;margin:0;padding:12pt}
   .modal{display:none}
+  /* Hide elements with .no-print class during print */
+  .no-print {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
   /* force page size A4 */
   @page{
     size:A4;
