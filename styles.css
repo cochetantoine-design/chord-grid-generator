@@ -36,49 +36,40 @@ body{
   min-height:var(--page-height);
   margin:0 auto;
   background:white;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
   padding:12pt;
-  box-shadow:0 0 8px rgba(0,0,0,0.08);
+  display:block;
 }
 
-/* Header */
+/* header */
 .sheet-header{
   height:var(--header-height);
-  max-height:var(--header-height);
   display:flex;
   align-items:center;
-  border-bottom:1px solid transparent;
-  margin-bottom:8px;
+  justify-content:space-between;
 }
 .title-row{
   display:flex;
-  justify-content:space-between;
   width:100%;
+  justify-content:space-between;
   align-items:center;
 }
 .song-title .underline{
-  display:inline-block;
-  padding-bottom:4px;
-  border-bottom:2px solid black;
+  text-decoration:underline;
   font-weight:700;
   font-size:18pt;
 }
 .tempo-display{
-  font-size:12pt;
-  font-weight:600;
+  font-size:14pt;
 }
 
-/* Body: left column + right grid */
-.sheet-body{
-  display:block;
-}
+/* left column + grid container */
 .part{
   display:flex;
-  gap:8px;
+  gap:12px;
   margin-bottom:var(--part-gap);
   align-items:flex-start;
 }
-
-/* left column: names */
 .part-left{
   width:var(--left-col-width);
   min-width:var(--left-col-width);
@@ -125,39 +116,6 @@ body{
   cursor:pointer;
   user-select:none;
   overflow:visible;
-}
-
-/* When a measure contains at least one chord, use white background */
-.measure.filled{
-  background: #ffffff;
-}
-/* For split measures that are filled: keep diagonal overlay on white */
-.measure.split.filled{
-  background:
-    linear-gradient(135deg, transparent 49.4%, rgba(0,0,0,0.6) 50%, transparent 50.6%),
-    #ffffff;
-  background-size:100% 100%;
-}
-
-/* single chord center (oval or not) */
-.measure .chord{
-  background:transparent;
-  padding:3px 6px;
-}
-.measure .chord.oval{
-  background:white;
-  border:1px solid black;
-  border-radius:999px;
-  padding:2px 6px;
-}
-
-/* split measure visuals: diagonal from bottom-left to top-right */
-/* Note: .measure.split rule left as a fallback for unfilled split measures */
-.measure.split{
-  background:
-    linear-gradient(135deg, transparent 49.4%, rgba(0,0,0,0.6) 50%, transparent 50.6%) ,
-    var(--measure-bg);
-  background-size:100% 100%;
 }
 .measure .half{
   position:absolute;
@@ -243,4 +201,20 @@ body{
     size:A4;
     margin:12pt;
   }
+
+  /* Masquer les contrôles ajoutés (Paramètres / Dupliquer / Supprimer) */
+  .no-print {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+/* Classe utilitaire pour export programmatique */
+.exporting-pdf .no-print {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
