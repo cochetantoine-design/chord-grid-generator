@@ -238,9 +238,24 @@ body{
   .toolbar{display:none}
   .sheet{box-shadow:none;margin:0;padding:12pt}
   .modal{display:none}
+  /* Hide elements marked as no-print */
+  .no-print{
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
   /* force page size A4 */
   @page{
     size:A4;
     margin:12pt;
   }
+}
+
+/* Hide no-print elements when programmatically exporting */
+.exporting-pdf .no-print{
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
